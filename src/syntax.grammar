@@ -1,26 +1,31 @@
-@top Program { expression* }
+@top Top { Jevko }
 
-@skip { space | LineComment }
+@skip { }
 
-expression {
-  Identifier |
-  String |
-  Boolean |
-  Application { "(" expression* ")" }
+Jevko {
+  Subjevko* Text?
 }
 
+Subjevko { Text? "[" Jevko "]" }
+
 @tokens {
-  Identifier { $[a-zA-Z_\-0-9]+ }
+  Text {
+    symbol+
+  }
+  symbol {
+    digraph | character
+  }
+  digraph {
+    '`' ('`' | '[' | ']')
+  }
+  character {
+    ![`\[\]]
+  }
 
-  String { '"' (!["\\] | "\\" _)* '"' }
+  Prefix { Text }
+  suffix { Text }
 
-  Boolean { "#t" | "#f" }
-
-  LineComment { ";" ![\n]* }
-
-  space { $[ \t\n\r]+ }
-
-  "(" ")"
+  "[" "]"
 }
 
 @detectDelim
