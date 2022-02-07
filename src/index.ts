@@ -6,7 +6,9 @@ export const jevkoLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Jevko: delimitedIndent({closing: "]"})
+        Subjevko: (context) => {
+          return (context.continue() || context.baseIndent) + context.unit
+        }
       }),
       foldNodeProp.add({
         Subjevko: foldInside,
